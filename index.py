@@ -5,7 +5,7 @@ import os
 def parse_request(request):
     # Mem-parse HTTP request
     request_parts = request.split()
-    file_path = ""
+    file_path = "index.html"
     method = "GET"
     if len(request_parts) != 0:
         method = request_parts[0]
@@ -18,7 +18,6 @@ def parse_request(request):
 def create_response(file_path, method):
     if method == 'GET':
         # Mencari file yang diminta oleh client
-        print(f"FARIDZ \n \n{file_path}")
         if os.path.exists(file_path):
             with open(file_path, 'r') as file:
                 # Membuat response message dengan header HTTP dan konten file yang diminta
@@ -47,6 +46,7 @@ def run_web_server(host, port):
         print(f"Koneksi diterima dari {client_address}")
         # Menerima request dari client
         request = client_socket.recv(1024).decode()
+        print(f"Request:\n{request}")
         # print(f"Request:\n{request}")
         method, file_path = parse_request(request)
         response = create_response(file_path, method)
@@ -55,4 +55,5 @@ def run_web_server(host, port):
         client_socket.close()
 
 
-run_web_server("localhost", 8080)
+if __name__ == "__main__":
+    run_web_server("localhost", 8080)
