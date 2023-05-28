@@ -6,25 +6,25 @@ import os
 # Variabel CONTENT_TYPES adalah dictionary yang berisi jenis-jenis konten dan file extension
 CONTENT_TYPES = {
     "application": {
-        'pdf': 'application/pdf'
+        "pdf": "application/pdf"
     },
     "text": {
-        'html': "text/html",
-        'css': "text/css",
-        'js': "text/javascript"
+        "html": "text/html",
+        "css": "text/css",
+        "js": "text/javascript"
     },
     "video": {
-        'mp4': "video/mp4"
+        "mp4": "video/mp4"
     },
     "image": {
-        'png': 'image/png',
-        'jpg': 'image/jpeg',
-        'jpeg': 'image/jpeg',
-        'gif': 'image/gif',
-
+        "png": "image/png",
+        "jpg": "image/jpeg",
+        "jpeg": "image/jpeg",
+        "gif": "image/gif",
+        "svg": "image/svg+xml"
     },
     "audio": {
-        'mp3': 'audio/mpeg'
+        "mp3": "audio/mpeg"
     }
 
 }
@@ -43,7 +43,7 @@ def parse_request(request):
     # Mengecek apakah permintaan tidak kosong.
     if len(request_parts) != 0:
         method = request_parts[0]  # mengambil method yang di kirimkan
-        file_path = request_parts[1][1:]  # menghilangkan leading slash '/'
+        file_path = request_parts[1][1:]  # menghilangkan leading slash "/"
 
         # Menyimpan jalur file dari permintaan dengan menghapus garis miring awal ("/") jika ada.
         if file_path == "":
@@ -56,31 +56,31 @@ def parse_request(request):
 # Fungsi create_response digunakan untuk membuat respons HTTP berdasarkan jalur file yang diminta dan metode HTTP yang
 # diterima dengan parameter file_path dan method.
 def create_response(file_path, method):
-    # Jika metode adalah 'GET', maka mencari file yang diminta oleh client.
-    if method == 'GET':
+    # Jika metode adalah "GET", maka mencari file yang diminta oleh client.
+    if method == "GET":
         # Jika file ditemukan, membuka file dan membuat respons HTTP dengan header dan konten file yang sesuai.
         if os.path.exists(file_path):
             # mengakses variable content_types untuk melakukan pengecekan terhadap file extension dengan membaginya
             # menjadi key dan value
             for key, value in CONTENT_TYPES.items():
                 # melakukan pengecekan pada file_path apakah ada di value
-                if file_path.split('.')[-1] in value:
+                if file_path.split(".")[-1] in value:
                     # membuka file jika file extension tersebut ada
-                    with open(file_path, 'rb') as file:
+                    with open(file_path, "rb") as file:
                         # Membuat response message dengan header HTTP dan konten file diminta
                         return f"HTTP/1.1 200 OK\nContent-Type: {CONTENT_TYPES[key][file_path.split('.')[-1]]}\n\n".encode(
                         ) + file.read()
 
-        # Jika file tidak ditemukan, membuka file "404.html" dan membuat respons HTTP dengan pesan '404 Not Found'.
+        # Jika file tidak ditemukan, membuka file "404.html" dan membuat respons HTTP dengan pesan "404 Not Found".
         else:
-            # Membuat response message dengan pesan '404 Not Found'
-            with open("404.html", 'rb') as file:
+            # Membuat response message dengan pesan "404 Not Found"
+            with open("404.html", "rb") as file:
                 # Membuat response message dengan header HTTP dan konten file gambar yang diminta
                 return f"HTTP/1.1 404 Not Found\nContent-Type: text/html\n\n".encode() + file.read()
 
-    # Jika metode bukan 'GET', maka membuat respons HTTP dengan pesan '405 Method Not Allowed'.
+    # Jika metode bukan "GET", maka membuat respons HTTP dengan pesan "405 Method Not Allowed".
     else:
-        # Membuat response message dengan pesan '405 Method Not Allowed'
+        # Membuat response message dengan pesan "405 Method Not Allowed"
         return "HTTP/1.1 405 Method Not Allowed\n\n405 Method Not Allowed".encode()
 
 
@@ -113,7 +113,7 @@ def run_web_server(host, port):
         client_socket.close()
 
 
-# Memastikan bahwa skrip ini hanya dijalankan jika ini adalah file utama.
+# Memastikan bahwa code ini hanya dijalankan jika ini adalah file utama.
 if __name__ == "__main__":
-    # Memanggil fungsi run_web_server dengan parameter"localhost" sebagai host dan 8080 sebagai port untuk menjalankan server web.
+    # Memanggil fungsi run_web_server dengan parameter "localhost" sebagai host dan 8080 sebagai port untuk menjalankan server web.
     run_web_server("localhost", 8080)
